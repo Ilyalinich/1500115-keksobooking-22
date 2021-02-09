@@ -122,14 +122,12 @@ const getRandomLengthArray = (elements) => {
     .slice(0, getRandomInteger(0, elements.length));
 };
 
-const getFeaturesResult = (randomLengthArray) => randomLengthArray.map(([key]) => key);
-
-const getDescriptionResult = (randomLengthArray) => {
-  if (randomLengthArray.length === 0) {
+const getDescriptionResult = (featuresResult) => {
+  if (featuresResult.length === 0) {
     return ', но нам нечем вас удивить.'
   }
 
-  const descriptionResults = randomLengthArray.map(([, value]) => value);
+  const descriptionResults = featuresResult.map((feature) => FEATURES[feature]);
 
   return `. У нас есть: ${descriptionResults.join(', ')}.`
 };
@@ -143,21 +141,7 @@ const generateAd = () => {
 
   const typeResult = getRandomElement(REALTY_TYPES);
 
-  const randomLengthArray = getRandomLengthArray(Object.entries(FEATURES));
-
-
-  // const featuresResult = getRandomLengthArray(Object.keys(FEATURES));
-  // const getDescriptionResult = (featuresResult) => {
-  //   if (featuresResult.length === 0) {
-  //     return ', но нам нечем вас удивить.'
-  //   }
-
-  //   const descriptionResults = new Array(featuresResult.length)
-  //     .fill(null)
-  //     .map((element, index) => Object.values(FEATURES)[index]);
-
-  //   return `. У нас есть: ${descriptionResults.join(', ')}.`
-  // };
+  const featuresResult = getRandomLengthArray(Object.keys(FEATURES));
 
   return {
     author: {
@@ -173,8 +157,8 @@ const generateAd = () => {
       guests: getRandomInteger(GuestsCount.MIN, GuestsCount.MAX),
       checkin: getRandomElement(CHECK_TIMES),
       checkout: getRandomElement(CHECK_TIMES),
-      features: getFeaturesResult(randomLengthArray),
-      description: `Прекрасное место для отдыха${getDescriptionResult(randomLengthArray)}`,
+      features: featuresResult,
+      description: `Прекрасное место для отдыха${getDescriptionResult(featuresResult)}`,
       photos: getRandomLengthArray(PHOTOS),
     },
 
