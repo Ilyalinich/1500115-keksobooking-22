@@ -1,13 +1,13 @@
-import * as constants from './constants.js';
+import * as constant from './constant.js';
 
-import {getRandomInteger, getRandomFloat, getRandomElement, getRandomLengthArray} from './utils.js';
+import {getRandomInteger, getRandomFloat, getRandomElement, getRandomLengthArray} from './util.js';
 
 const getDescriptionResult = (featuresResult) => {
   if (featuresResult.length === 0) {
     return ', но нам нечем вас удивить.'
   }
 
-  const descriptionResults = featuresResult.map((feature) => constants.FEATURES[feature]);
+  const descriptionResults = featuresResult.map((feature) => constant.FEATURES[feature]);
 
   return `. У нас есть: ${descriptionResults.join(', ')}.`
 };
@@ -15,38 +15,38 @@ const getDescriptionResult = (featuresResult) => {
 const generateAd = () => {
 
   const location = {
-    x: getRandomFloat(constants.LocationCounts.X_MIN, constants.LocationCounts.X_MAX, constants.LocationCounts.DIGITS),
-    y: getRandomFloat(constants.LocationCounts.Y_MIN, constants.LocationCounts.Y_MAX, constants.LocationCounts.DIGITS),
+    x: getRandomFloat(constant.LocationCounts.X_MIN, constant.LocationCounts.X_MAX, constant.LocationCounts.DIGITS),
+    y: getRandomFloat(constant.LocationCounts.Y_MIN, constant.LocationCounts.Y_MAX, constant.LocationCounts.DIGITS),
   };
 
-  const typeResult = getRandomElement(constants.REALTY_TYPES);
+  const typeResult = getRandomElement(constant.REALTY_TYPES);
 
-  const featuresResult = getRandomLengthArray(Object.keys(constants.FEATURES));
+  const featuresResult = getRandomLengthArray(Object.keys(constant.FEATURES));
 
   return {
     author: {
-      avatar: `img/avatars/user0${getRandomInteger(constants.UsersCount.MIN, constants.UsersCount.MAX)}.png`,
+      avatar: `img/avatars/user0${getRandomInteger(constant.UsersCount.MIN, constant.UsersCount.MAX)}.png`,
     },
 
     offer: {
-      title: `${typeResult} ${getRandomElement(constants.REALTY_NAMES)}`,
+      title: `${typeResult} ${getRandomElement(constant.REALTY_NAMES)}`,
       address: Object.values(location).join(', '),
-      price: getRandomInteger(constants.PriceCount.MIN, constants.PriceCount.MAX),
+      price: getRandomInteger(constant.PriceCount.MIN, constant.PriceCount.MAX),
       type: typeResult,
-      rooms: getRandomInteger(constants.RoomsCount.MIN, constants.RoomsCount.MAX),
-      guests: getRandomInteger(constants.GuestsCount.MIN, constants.GuestsCount.MAX),
-      checkin: getRandomElement(constants.CHECK_TIMES),
-      checkout: getRandomElement(constants.CHECK_TIMES),
+      rooms: getRandomInteger(constant.RoomsCount.MIN, constant.RoomsCount.MAX),
+      guests: getRandomInteger(constant.GuestsCount.MIN, constant.GuestsCount.MAX),
+      checkin: getRandomElement(constant.CHECK_TIMES),
+      checkout: getRandomElement(constant.CHECK_TIMES),
       features: featuresResult,
       description: `Прекрасное место для отдыха${getDescriptionResult(featuresResult)}`,
-      photos: getRandomLengthArray(constants.PHOTOS),
+      photos: getRandomLengthArray(constant.PHOTOS),
     },
 
     location,
   };
 };
 
-const totalArray = new Array(constants.ADVERTISEMENT_COUNT)
+const totalArray = new Array(constant.ADVERTISEMENT_COUNT)
   .fill(null)
   .map(generateAd);
 
