@@ -1,4 +1,7 @@
-import {totalArray as dataResult} from './data.js';
+import {map} from './map.js'
 
 /* eslint-disable*/
-console.log(dataResult);
+console.log(map);
+
+
+
