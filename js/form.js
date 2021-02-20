@@ -1,3 +1,5 @@
+import {isActivePage, getDisableElements} from './map.js'
+
 const MIN_PRICE_COUNTS = {
   bungalow: 0,
   flat: 1000,
@@ -6,6 +8,17 @@ const MIN_PRICE_COUNTS = {
 }
 
 const adForm = document.querySelector('.ad-form');
+const adFormElements = adForm.children;
+
+if (!isActivePage) {
+  adForm.classList.add('ad-form--disabled');
+  getDisableElements(adFormElements);
+}
+
+
+// const addressField = adForm.querySelector('#address');
+
+
 const typeField = adForm.querySelector('#type');
 const priceField = adForm.querySelector('#price');
 
@@ -17,7 +30,6 @@ const onTypeFieldChange = () => {
   priceField.min = MIN_PRICE_COUNTS[typeField.value];
 }
 typeField.addEventListener('change', onTypeFieldChange);
-
 
 
 
