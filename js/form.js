@@ -18,8 +18,8 @@ if (!isActivePage) {
   const typeField = adForm.querySelector('#type');
   const priceField = adForm.querySelector('#price');
 
-  priceField.placeholder = MIN_PRICE_COUNTS[typeField.value];
-  priceField.min = MIN_PRICE_COUNTS[typeField.value];
+  // priceField.placeholder = MIN_PRICE_COUNTS[typeField.value];
+  // priceField.min = MIN_PRICE_COUNTS[typeField.value];
 
   const onTypeFieldChange = () => {
     priceField.placeholder = MIN_PRICE_COUNTS[typeField.value];
