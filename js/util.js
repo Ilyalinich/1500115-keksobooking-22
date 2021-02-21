@@ -55,4 +55,10 @@ const getRandomLengthArray = (elements) => {
     .slice(0, getRandomInteger(0, elements.length));
 };
 
-export {getRandomInteger, getRandomFloat, getRandomElement, getRandomLengthArray};
+const getDisableElements = (elements) => {
+  for (const element of elements) {
+    element.disabled = true;
+  }
+}
+
+export {getRandomInteger, getRandomFloat, getRandomElement, getRandomLengthArray, getDisableElements};
