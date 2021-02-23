@@ -1,4 +1,3 @@
-import {isActivePage} from './map.js'
 import {disableElements} from './util.js'
 
 const MIN_PRICE_COUNTS = {
@@ -16,10 +15,15 @@ const FORM_SPECIAL_VALUES = {
 const adForm = document.querySelector('.ad-form');
 const adFormElements = adForm.children;
 
-if (!isActivePage) {
+const addressField = adForm.querySelector('#address');
+const getAddress = (lat, lng) => addressField.value = `${lat}, ${lng}`;
+
+const disableForm = () => {
   adForm.classList.add('ad-form--disabled');
   disableElements(adFormElements);
-} else {
+}
+
+const activateForm = () => {
   const titleField = adForm.querySelector('#title');
 
   const onTitleFieldFocus = () => {
@@ -47,11 +51,10 @@ if (!isActivePage) {
   titleField.addEventListener('input', onTitleFieldInput);
 
 
-
   const typeField = adForm.querySelector('#type');
   const priceField = adForm.querySelector('#price');
 
-  const onPriceFieldInput = () => {
+  const checkPriceFieldValidity = () => {
     if (priceField.value < Number(priceField.min)) {
       priceField.setCustomValidity(`Минимальная цена за ночь: ${priceField.min} руб. для данного типа жилья.`);
     } else if (priceField.value > Number(priceField.max)) {
@@ -62,12 +65,14 @@ if (!isActivePage) {
     priceField.reportValidity()
   }
 
-  priceField.addEventListener('input', onPriceFieldInput);
+  priceField.addEventListener('input', () => {
+    checkPriceFieldValidity()
+  });
 
   const onTypeFieldChange = () => {
     priceField.placeholder = MIN_PRICE_COUNTS[typeField.value];
     priceField.min = MIN_PRICE_COUNTS[typeField.value];
-    onPriceFieldInput();
+    checkPriceFieldValidity()
   }
 
   typeField.addEventListener('change', onTypeFieldChange);
@@ -76,17 +81,18 @@ if (!isActivePage) {
   const timeInField = adForm.querySelector('#timein');
   const timeOutField = adForm.querySelector('#timeout');
 
-  const onTimeInFieldChange = () => timeOutField.value = timeInField.value;
-  const onTimeOutFieldChange = () => timeInField.value = timeOutField.value;
-
-  timeInField.addEventListener('change', onTimeInFieldChange);
-  timeOutField.addEventListener('change', onTimeOutFieldChange);
+  timeInField.addEventListener('change', () => {
+    timeOutField.value = timeInField.value;
+  });
+  timeOutField.addEventListener('change', () => {
+    timeInField.value = timeOutField.value;
+  });
 
 
   const roomsField = adForm.querySelector('#room_number');
   const capacityField = adForm.querySelector('#capacity');
 
-  const onCapacityFieldChange = () => {
+  const checkCapacityFieldValidity = () => {
     if (Number(capacityField.value) > Number(roomsField.value)) {
       capacityField.setCustomValidity('Комнат не должно быть меньше, чем гостей');
     } else if ((Number(capacityField.value) === FORM_SPECIAL_VALUES.capacity) && (Number(roomsField.value) !== FORM_SPECIAL_VALUES.rooms)) {
@@ -99,6 +105,13 @@ if (!isActivePage) {
     capacityField.reportValidity()
   }
 
-  capacityField.addEventListener('change', onCapacityFieldChange)
-  roomsField.addEventListener('change', onCapacityFieldChange)
+  capacityField.addEventListener('change', () => {
+    checkCapacityFieldValidity();
+  })
+  roomsField.addEventListener('change', () => {
+    checkCapacityFieldValidity();
+  })
 }
+
+
+export {getAddress, disableForm, activateForm}

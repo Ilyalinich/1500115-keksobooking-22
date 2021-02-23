@@ -1,11 +1,13 @@
 import {createCards} from './create-cards.js';
-import {disableElements} from './util.js'
+import {disableElements} from './util.js';
+import {getAddress, disableForm, activateForm} from './form.js';
+
+const MAP_ZOOM = 12;
 
 const BasicCoordinates = {
-  lat: 35.6895,
-  lng: 139.692,
+  LAT: 35.6895,
+  LNG: 139.692,
 };
-const mapZoom = 12;
 
 let isActivePage = false;
 const filtersForm = document.querySelector('.map__filters');
@@ -17,17 +19,17 @@ const map = L.map('map-canvas')
     isActivePage = true;
   })
   .setView({
-    lat: BasicCoordinates.lat,
-    lng: BasicCoordinates.lng,
-  }, mapZoom);
+    lat: BasicCoordinates.LAT,
+    lng: BasicCoordinates.LNG,
+  }, MAP_ZOOM);
 
 if (!isActivePage) {
   filtersForm.classList.add('map__filters--disabled');
   disableElements(filtersFormElements);
+  disableForm();
 } else {
-  const adForm = document.querySelector('.ad-form');
-  const addressField = adForm.querySelector('#address');
-  addressField.value = `${BasicCoordinates.lat}, ${BasicCoordinates.lng}`;
+  activateForm();
+  getAddress(BasicCoordinates.LAT, BasicCoordinates.LNG)
 
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -44,8 +46,8 @@ if (!isActivePage) {
 
   const mainMarker = L.marker(
     {
-      lat: BasicCoordinates.lat,
-      lng: BasicCoordinates.lng,
+      lat: BasicCoordinates.LAT,
+      lng: BasicCoordinates.LNG,
     },
     {
       draggable: true,
@@ -56,7 +58,7 @@ if (!isActivePage) {
 
   mainMarker.on('move', (evt) => {
     const {lat, lng} = evt.target.getLatLng();
-    addressField.value =`${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+    getAddress(lat.toFixed(5), lng.toFixed(5))
   });
 
   const icon = L.icon({
@@ -85,4 +87,3 @@ if (!isActivePage) {
   });
 }
 
-export{isActivePage}
