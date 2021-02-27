@@ -1,7 +1,3 @@
-import {generateAds} from './data.js';
-
-const adsArray = generateAds();
-
 const REALTY_TYPES = {
   palace: 'Дворец',
   flat: 'Квартира',
@@ -64,7 +60,7 @@ const createCard = (dataElement) => {
   return card;
 }
 
-const createCards = () => adsArray.map((ad) => createCard(ad));
+// const createCards = (dataArray) => dataArray.map((dataElement) => createCard(dataElement));
 
 
-export {createCards};
+export {createCard};

@@ -1,8 +1,9 @@
-import {createCards} from './create-cards.js';
+import {setAddress, disableForm, activateForm} from './form.js';
 import {disableElements} from './util.js';
-import {getAddress, disableForm, activateForm} from './form.js';
+import {createCard} from './create-cards.js';
+import {getData} from './api.js'
 
-const MAP_ZOOM = 12;
+const MAP_ZOOM = 10;
 
 const BasicCoordinates = {
   LAT: 35.6895,
@@ -29,7 +30,7 @@ if (!isActivePage) {
   disableForm();
 } else {
   activateForm();
-  getAddress(BasicCoordinates.LAT, BasicCoordinates.LNG)
+  setAddress(BasicCoordinates.LAT, BasicCoordinates.LNG)
 
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -58,25 +59,25 @@ if (!isActivePage) {
 
   mainMarker.on('move', (evt) => {
     const {lat, lng} = evt.target.getLatLng();
-    getAddress(lat.toFixed(5), lng.toFixed(5))
+    setAddress(lat.toFixed(5), lng.toFixed(5))
   });
 
-  const icon = L.icon({
-    iconUrl: '../img/pin.svg',
-    iconSize: [52, 52],
-    iconAnchor: [26, 52],
-  })
+  /*eslint-disable*/
+  console.log(mainMarker);
 
-  const cardsArray = createCards();
-  cardsArray.forEach((card) => {
+  const createAdd = (card, location) => {
+    const icon = L.icon({
+      iconUrl: '../img/pin.svg',
+      iconSize: [52, 52],
+      iconAnchor: [26, 52],
+    })
 
-    const addressContainer = card.querySelector('.popup__text--address');
-    const coordinates = addressContainer.textContent.split(', ');
+    const {lat, lng} = location;
 
     const marker = L.marker(
       {
-        lat: coordinates[0],
-        lng: coordinates[1],
+        lat,
+        lng,
       },
       {
         icon,
@@ -84,6 +85,23 @@ if (!isActivePage) {
     );
     marker.addTo(map);
     marker.bindPopup(card);
+  }
+
+  getData((dataArray) => {
+    dataArray.forEach((dataElement) => {
+      const card = createCard(dataElement);
+      createAdd(card, dataElement.location);
+    })
   });
 }
 
+const resetMap = () => {
+  /*eslint-disable*/
+  console.log('все ок');
+  mainMarker.latlng = {
+    lat: BasicCoordinates.LAT,
+    lng: BasicCoordinates.LNG,
+  }
+}
+
+export {resetMap}
