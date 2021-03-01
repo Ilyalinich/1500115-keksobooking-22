@@ -93,34 +93,3 @@ const resetMap = () => {
 }
 
 export {isActivePage, activateMap, resetMap}
-
-
-
-// const createAdd = (card, location) => {
-//   const icon = L.icon({
-//     iconUrl: '../img/pin.svg',
-//     iconSize: [52, 52],
-//     iconAnchor: [26, 52],
-//   })
-
-//   const {lat, lng} = location;
-
-//   const marker = L.marker(
-//     {
-//       lat,
-//       lng,
-//     },
-//     {
-//       icon,
-//     },
-//   );
-//   marker.addTo(map);
-//   marker.bindPopup(card);
-// }
-
-// getData((dataArray) => {
-//   dataArray.forEach((dataElement) => {
-//     const card = createCard(dataElement);
-//     createAdd(card, dataElement.location);
-//   })
-// });

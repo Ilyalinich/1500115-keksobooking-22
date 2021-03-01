@@ -119,10 +119,6 @@ const activateForm = () => {
   roomsField.addEventListener('change', () => {
     checkCapacityFieldValidity();
   })
-
-  // const resetButton = adForm.querySelector('.ad-form__reset')
-  // resetButton.addEventListener
-
 }
 
 const setResetButtonHandler = (resetPage) => {
@@ -132,7 +128,6 @@ const setResetButtonHandler = (resetPage) => {
     resetPage();
   });
 }
-
 
 const resetForm = () => {
   adForm.reset();
@@ -151,23 +146,4 @@ const setFormSubmit = (onSuccess, onFail) => {
   })
 }
 
-// () => onSuccess(),
-// () => onFail(),
-
-// const setFormSubmit = () => {
-//   adForm.addEventListener('submit', (evt) => {
-//     evt.preventDefault();
-
-//     sendData(
-//       () => {
-//         createSendSuccessMessage();
-//         resetForm();
-//       },
-//       () => {
-//         createSendErrorMessage();
-//       },
-//       new FormData(evt.target),
-//     );
-//   })
-// }
 export {setAddress, disableForm, activateForm, setFormSubmit, resetForm, setResetButtonHandler}

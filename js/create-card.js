@@ -10,11 +10,8 @@ const cardTemplate = document.querySelector('#card')
   .querySelector('.popup');
 
 const photoTemplate = cardTemplate.querySelector('.popup__photo')
-
 const photosFragment = document.createDocumentFragment();
-
 const featuresFragment = document.createDocumentFragment();
-
 
 
 
@@ -59,8 +56,5 @@ const createCard = (dataElement) => {
 
   return card;
 }
-
-// const createCards = (dataArray) => dataArray.map((dataElement) => createCard(dataElement));
-
 
 export {createCard};

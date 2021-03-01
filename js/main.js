@@ -1,5 +1,3 @@
-// import './form.js'
-// import './map.js'
 import {isActivePage, activateMap, resetMap} from './map.js'
 import {disableForm, setFormSubmit, resetForm, setResetButtonHandler, activateForm} from './form.js'
 import {disableFilters, resetFilters} from './filters.js'
