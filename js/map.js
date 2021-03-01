@@ -1,5 +1,4 @@
-import {setAddress, disableForm, activateForm} from './form.js';
-import {disableFilters} from './filters.js'
+import {setAddress} from './form.js';
 import {createCard} from './create-card.js';
 import {getData} from './api.js'
 import {createGetErrorMessage} from './create-message.js'
@@ -23,11 +22,9 @@ const map = L.map('map-canvas')
     lng: BasicCoordinates.LNG,
   }, MAP_ZOOM);
 
-if (!isActivePage) {
-  disableFilters();
-  disableForm();
-} else {
-  activateForm();
+let mainMarker = '';
+
+const activateMap = () =>{
   setAddress(BasicCoordinates.LAT, BasicCoordinates.LNG)
 
   L.tileLayer(
@@ -43,7 +40,7 @@ if (!isActivePage) {
     iconAnchor: [26, 52],
   })
 
-  const mainMarker = L.marker(
+  mainMarker = L.marker(
     {
       lat: BasicCoordinates.LAT,
       lng: BasicCoordinates.LNG,
@@ -59,9 +56,6 @@ if (!isActivePage) {
     const {lat, lng} = evt.target.getLatLng();
     setAddress(lat.toFixed(5), lng.toFixed(5))
   });
-
-  /*eslint-disable*/
-  console.log(mainMarker);
 
   const createAdds = (dataArray) => {
     dataArray.forEach((dataElement) => {
@@ -90,19 +84,15 @@ if (!isActivePage) {
   }
 
   getData(createAdds, createGetErrorMessage);
-
 }
+
 
 const resetMap = () => {
-  /*eslint-disable*/
-  console.log('все ок');
-  mainMarker.latlng = {
-    lat: BasicCoordinates.LAT,
-    lng: BasicCoordinates.LNG,
-  }
+  map.panTo([BasicCoordinates.LAT, BasicCoordinates.LNG]);
+  mainMarker.setLatLng([BasicCoordinates.LAT, BasicCoordinates.LNG]);
 }
 
-export {resetMap}
+export {isActivePage, activateMap, resetMap}
 
 
 

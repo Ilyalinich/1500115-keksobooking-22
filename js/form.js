@@ -125,7 +125,7 @@ const activateForm = () => {
 
 }
 
-const setResetFormHandler = (resetPage) => {
+const setResetButtonHandler = (resetPage) => {
   const resetButton = adForm.querySelector('.ad-form__reset')
   resetButton.addEventListener('click', (evt) => {
     evt.preventDefault();
@@ -170,4 +170,4 @@ const setFormSubmit = (onSuccess, onFail) => {
 //     );
 //   })
 // }
-export {setAddress, disableForm, activateForm, setFormSubmit, resetForm, setResetFormHandler}
+export {setAddress, disableForm, activateForm, setFormSubmit, resetForm, setResetButtonHandler}
