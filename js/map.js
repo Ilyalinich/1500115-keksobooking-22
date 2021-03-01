@@ -1,7 +1,8 @@
 import {setAddress, disableForm, activateForm} from './form.js';
-import {disableElements} from './util.js';
-import {createCard} from './create-cards.js';
+import {disableFilters} from './filters.js'
+import {createCard} from './create-card.js';
 import {getData} from './api.js'
+import {createGetErrorMessage} from './create-message.js'
 
 const MAP_ZOOM = 10;
 
@@ -11,8 +12,6 @@ const BasicCoordinates = {
 };
 
 let isActivePage = false;
-const filtersForm = document.querySelector('.map__filters');
-const filtersFormElements = filtersForm.children;
 
 /*global L:readonly */
 const map = L.map('map-canvas')
@@ -25,8 +24,7 @@ const map = L.map('map-canvas')
   }, MAP_ZOOM);
 
 if (!isActivePage) {
-  filtersForm.classList.add('map__filters--disabled');
-  disableElements(filtersFormElements);
+  disableFilters();
   disableForm();
 } else {
   activateForm();
@@ -65,34 +63,34 @@ if (!isActivePage) {
   /*eslint-disable*/
   console.log(mainMarker);
 
-  const createAdd = (card, location) => {
-    const icon = L.icon({
-      iconUrl: '../img/pin.svg',
-      iconSize: [52, 52],
-      iconAnchor: [26, 52],
-    })
-
-    const {lat, lng} = location;
-
-    const marker = L.marker(
-      {
-        lat,
-        lng,
-      },
-      {
-        icon,
-      },
-    );
-    marker.addTo(map);
-    marker.bindPopup(card);
-  }
-
-  getData((dataArray) => {
+  const createAdds = (dataArray) => {
     dataArray.forEach((dataElement) => {
       const card = createCard(dataElement);
-      createAdd(card, dataElement.location);
-    })
-  });
+
+      const icon = L.icon({
+        iconUrl: '../img/pin.svg',
+        iconSize: [52, 52],
+        iconAnchor: [26, 52],
+      });
+
+      const {lat, lng} = dataElement.location;
+
+      const marker = L.marker(
+        {
+          lat,
+          lng,
+        },
+        {
+          icon,
+        },
+      );
+      marker.addTo(map);
+      marker.bindPopup(card);
+    });
+  }
+
+  getData(createAdds, createGetErrorMessage);
+
 }
 
 const resetMap = () => {
@@ -105,3 +103,34 @@ const resetMap = () => {
 }
 
 export {resetMap}
+
+
+
+// const createAdd = (card, location) => {
+//   const icon = L.icon({
+//     iconUrl: '../img/pin.svg',
+//     iconSize: [52, 52],
+//     iconAnchor: [26, 52],
+//   })
+
+//   const {lat, lng} = location;
+
+//   const marker = L.marker(
+//     {
+//       lat,
+//       lng,
+//     },
+//     {
+//       icon,
+//     },
+//   );
+//   marker.addTo(map);
+//   marker.bindPopup(card);
+// }
+
+// getData((dataArray) => {
+//   dataArray.forEach((dataElement) => {
+//     const card = createCard(dataElement);
+//     createAdd(card, dataElement.location);
+//   })
+// });

@@ -1,8 +1,10 @@
-const getData = (onSuccess) => {
+
+const getData = (onSuccess, onFail) => {
   fetch('https://22.javascript.pages.academy/keksobooking/data')
-    .then((response) => response.json())
+    .then((response) => response.ok ? response.json() : onFail())
     .then((data) => onSuccess(data))
-};
+    .catch(() => onFail());
+}
 
 const sendData = (onSuccess, onFail, body) => {
   fetch('https://22.javascript.pages.academy/keksobooking',
@@ -11,15 +13,8 @@ const sendData = (onSuccess, onFail, body) => {
       body,
     },
   )
-    .then((response) => {
-      if(response.ok) {
-        onSuccess();
-      } else {
-        onFail();
-      }
-    })
-    /*eslint-disable*/
-    .catch(() => console.log('!!!!!!!'));
+    .then((response) => response.ok ? onSuccess() : onFail())
+    .catch(() => onFail());
 };
 
 

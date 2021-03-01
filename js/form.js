@@ -1,5 +1,6 @@
 import {disableElements} from './util.js'
 import {sendData} from './api.js'
+// import {createSendSuccessMessage, createSendErrorMessage} from './create-message.js'
 
 
 const MIN_PRICE_COUNTS = {
@@ -118,15 +119,24 @@ const activateForm = () => {
   roomsField.addEventListener('change', () => {
     checkCapacityFieldValidity();
   })
+
+  // const resetButton = adForm.querySelector('.ad-form__reset')
+  // resetButton.addEventListener
+
+}
+
+const setResetFormHandler = (resetPage) => {
+  const resetButton = adForm.querySelector('.ad-form__reset')
+  resetButton.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    resetPage();
+  });
 }
 
 
 const resetForm = () => {
-  /*eslint-disable*/
-  console.log('все ок');
   adForm.reset();
   changePriseField();
-
 }
 
 const setFormSubmit = (onSuccess, onFail) => {
@@ -134,11 +144,30 @@ const setFormSubmit = (onSuccess, onFail) => {
     evt.preventDefault();
 
     sendData(
-      () => onSuccess(),
-      () => onFail(),
+      onSuccess,
+      onFail,
       new FormData(evt.target),
     );
   })
 }
 
-export {setAddress, disableForm, activateForm, setFormSubmit, resetForm}
+// () => onSuccess(),
+// () => onFail(),
+
+// const setFormSubmit = () => {
+//   adForm.addEventListener('submit', (evt) => {
+//     evt.preventDefault();
+
+//     sendData(
+//       () => {
+//         createSendSuccessMessage();
+//         resetForm();
+//       },
+//       () => {
+//         createSendErrorMessage();
+//       },
+//       new FormData(evt.target),
+//     );
+//   })
+// }
+export {setAddress, disableForm, activateForm, setFormSubmit, resetForm, setResetFormHandler}
