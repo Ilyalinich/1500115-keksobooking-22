@@ -1,4 +1,7 @@
 import {disableElements} from './util.js'
+import {sendData} from './api.js'
+// import {createSendSuccessMessage, createSendErrorMessage} from './create-message.js'
+
 
 const MIN_PRICE_COUNTS = {
   bungalow: 0,
@@ -16,7 +19,14 @@ const adForm = document.querySelector('.ad-form');
 const adFormElements = adForm.children;
 
 const addressField = adForm.querySelector('#address');
-const getAddress = (lat, lng) => addressField.value = `${lat}, ${lng}`;
+const priceField = adForm.querySelector('#price');
+const typeField = adForm.querySelector('#type');
+
+const setAddress = (lat, lng) => addressField.value = `${lat}, ${lng}`;
+const changePriseField = () => {
+  priceField.placeholder = MIN_PRICE_COUNTS[typeField.value];
+  priceField.min = MIN_PRICE_COUNTS[typeField.value];
+}
 
 const disableForm = () => {
   adForm.classList.add('ad-form--disabled');
@@ -26,24 +36,25 @@ const disableForm = () => {
 const activateForm = () => {
   const titleField = adForm.querySelector('#title');
 
+
   const onTitleFieldFocus = () => {
+    let validationMessage = '';
     if (titleField.validity.valueMissing) {
-      titleField.setCustomValidity(`Заголовок должен содержать от ${titleField.minLength} до ${titleField.maxLength} символов.`);
-    } else {
-      titleField.setCustomValidity('');
+      validationMessage = `Заголовок должен содержать от ${titleField.minLength} до ${titleField.maxLength} символов.`;
     }
+    titleField.setCustomValidity(validationMessage);
     titleField.reportValidity();
   }
 
   const onTitleFieldInput = () => {
     const valueLength = titleField.value.length;
+    let validationMessage = '';
     if (valueLength < titleField.minLength) {
-      titleField.setCustomValidity(`Введите еще ${titleField.minLength - valueLength} симв.`);
+      validationMessage = `Введите еще ${titleField.minLength - valueLength} симв.`;
     } else if (valueLength > titleField.maxLength) {
-      titleField.setCustomValidity(`Удалите лишние ${valueLength - titleField.maxLength} симв.`);
-    } else {
-      titleField.setCustomValidity('');
+      validationMessage = `Удалите лишние ${valueLength - titleField.maxLength} симв.`;
     }
+    titleField.setCustomValidity(validationMessage);
     titleField.reportValidity()
   }
 
@@ -51,17 +62,15 @@ const activateForm = () => {
   titleField.addEventListener('input', onTitleFieldInput);
 
 
-  const typeField = adForm.querySelector('#type');
-  const priceField = adForm.querySelector('#price');
 
   const checkPriceFieldValidity = () => {
+    let validationMessage = '';
     if (priceField.value < Number(priceField.min)) {
-      priceField.setCustomValidity(`Минимальная цена за ночь: ${priceField.min} руб. для данного типа жилья.`);
+      validationMessage = `Минимальная цена за ночь: ${priceField.min} руб. для данного типа жилья.`;
     } else if (priceField.value > Number(priceField.max)) {
-      priceField.setCustomValidity(`Максимальная цена за ночь: ${priceField.max} руб.`);
-    } else {
-      priceField.setCustomValidity('');
+      validationMessage = `Максимальная цена за ночь: ${priceField.max} руб.`;
     }
+    priceField.setCustomValidity(validationMessage);
     priceField.reportValidity()
   }
 
@@ -70,9 +79,8 @@ const activateForm = () => {
   });
 
   const onTypeFieldChange = () => {
-    priceField.placeholder = MIN_PRICE_COUNTS[typeField.value];
-    priceField.min = MIN_PRICE_COUNTS[typeField.value];
-    checkPriceFieldValidity()
+    changePriseField();
+    checkPriceFieldValidity();
   }
 
   typeField.addEventListener('change', onTypeFieldChange);
@@ -93,15 +101,15 @@ const activateForm = () => {
   const capacityField = adForm.querySelector('#capacity');
 
   const checkCapacityFieldValidity = () => {
+    let validationMessage = '';
     if (Number(capacityField.value) > Number(roomsField.value)) {
-      capacityField.setCustomValidity('Комнат не должно быть меньше, чем гостей');
+      validationMessage = 'Комнат не должно быть меньше, чем гостей';
     } else if ((Number(capacityField.value) === FORM_SPECIAL_VALUES.capacity) && (Number(roomsField.value) !== FORM_SPECIAL_VALUES.rooms)) {
-      capacityField.setCustomValidity(`Не для гостей может использоваться только ${FORM_SPECIAL_VALUES.rooms} комнат`);
+      validationMessage = `Не для гостей может использоваться только ${FORM_SPECIAL_VALUES.rooms} комнат`;
     } else if ((Number(capacityField.value) !== FORM_SPECIAL_VALUES.capacity) && (Number(roomsField.value) === FORM_SPECIAL_VALUES.rooms)) {
-      capacityField.setCustomValidity('Указанное количество комнат может использоваться только не для гостей');
-    } else {
-      capacityField.setCustomValidity('');
+      validationMessage = 'Указанное количество комнат может использоваться только не для гостей';
     }
+    capacityField.setCustomValidity(validationMessage);
     capacityField.reportValidity()
   }
 
@@ -113,5 +121,29 @@ const activateForm = () => {
   })
 }
 
+const setResetButtonHandler = (resetPage) => {
+  const resetButton = adForm.querySelector('.ad-form__reset')
+  resetButton.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    resetPage();
+  });
+}
 
-export {getAddress, disableForm, activateForm}
+const resetForm = () => {
+  adForm.reset();
+  changePriseField();
+}
+
+const setFormSubmit = (onSuccess, onFail) => {
+  adForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    sendData(
+      onSuccess,
+      onFail,
+      new FormData(evt.target),
+    );
+  })
+}
+
+export {setAddress, disableForm, activateForm, setFormSubmit, resetForm, setResetButtonHandler}

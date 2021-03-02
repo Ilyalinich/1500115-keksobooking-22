@@ -1,7 +1,3 @@
-import {generateAds} from './data.js';
-
-const adsArray = generateAds();
-
 const REALTY_TYPES = {
   palace: 'Дворец',
   flat: 'Квартира',
@@ -14,11 +10,8 @@ const cardTemplate = document.querySelector('#card')
   .querySelector('.popup');
 
 const photoTemplate = cardTemplate.querySelector('.popup__photo')
-
 const photosFragment = document.createDocumentFragment();
-
 const featuresFragment = document.createDocumentFragment();
-
 
 
 
@@ -64,7 +57,4 @@ const createCard = (dataElement) => {
   return card;
 }
 
-const createCards = () => adsArray.map((ad) => createCard(ad));
-
-
-export {createCards};
+export {createCard};

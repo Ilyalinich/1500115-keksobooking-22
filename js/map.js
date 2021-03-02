@@ -1,8 +1,9 @@
-import {createCards} from './create-cards.js';
-import {disableElements} from './util.js';
-import {getAddress, disableForm, activateForm} from './form.js';
+import {setAddress} from './form.js';
+import {createCard} from './create-card.js';
+import {getData} from './api.js'
+import {createGetErrorMessage} from './create-message.js'
 
-const MAP_ZOOM = 12;
+const MAP_ZOOM = 10;
 
 const BasicCoordinates = {
   LAT: 35.6895,
@@ -10,8 +11,6 @@ const BasicCoordinates = {
 };
 
 let isActivePage = false;
-const filtersForm = document.querySelector('.map__filters');
-const filtersFormElements = filtersForm.children;
 
 /*global L:readonly */
 const map = L.map('map-canvas')
@@ -23,13 +22,10 @@ const map = L.map('map-canvas')
     lng: BasicCoordinates.LNG,
   }, MAP_ZOOM);
 
-if (!isActivePage) {
-  filtersForm.classList.add('map__filters--disabled');
-  disableElements(filtersFormElements);
-  disableForm();
-} else {
-  activateForm();
-  getAddress(BasicCoordinates.LAT, BasicCoordinates.LNG)
+let mainMarker = '';
+
+const activateMap = () =>{
+  setAddress(BasicCoordinates.LAT, BasicCoordinates.LNG)
 
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -44,7 +40,7 @@ if (!isActivePage) {
     iconAnchor: [26, 52],
   })
 
-  const mainMarker = L.marker(
+  mainMarker = L.marker(
     {
       lat: BasicCoordinates.LAT,
       lng: BasicCoordinates.LNG,
@@ -58,32 +54,42 @@ if (!isActivePage) {
 
   mainMarker.on('move', (evt) => {
     const {lat, lng} = evt.target.getLatLng();
-    getAddress(lat.toFixed(5), lng.toFixed(5))
+    setAddress(lat.toFixed(5), lng.toFixed(5))
   });
 
-  const icon = L.icon({
-    iconUrl: '../img/pin.svg',
-    iconSize: [52, 52],
-    iconAnchor: [26, 52],
-  })
+  const createAdds = (dataArray) => {
+    dataArray.forEach((dataElement) => {
+      const card = createCard(dataElement);
 
-  const cardsArray = createCards();
-  cardsArray.forEach((card) => {
+      const icon = L.icon({
+        iconUrl: '../img/pin.svg',
+        iconSize: [52, 52],
+        iconAnchor: [26, 52],
+      });
 
-    const addressContainer = card.querySelector('.popup__text--address');
-    const coordinates = addressContainer.textContent.split(', ');
+      const {lat, lng} = dataElement.location;
 
-    const marker = L.marker(
-      {
-        lat: coordinates[0],
-        lng: coordinates[1],
-      },
-      {
-        icon,
-      },
-    );
-    marker.addTo(map);
-    marker.bindPopup(card);
-  });
+      const marker = L.marker(
+        {
+          lat,
+          lng,
+        },
+        {
+          icon,
+        },
+      );
+      marker.addTo(map);
+      marker.bindPopup(card);
+    });
+  }
+
+  getData(createAdds, createGetErrorMessage);
 }
 
+
+const resetMap = () => {
+  map.panTo([BasicCoordinates.LAT, BasicCoordinates.LNG]);
+  mainMarker.setLatLng([BasicCoordinates.LAT, BasicCoordinates.LNG]);
+}
+
+export {isActivePage, activateMap, resetMap}
