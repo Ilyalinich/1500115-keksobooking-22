@@ -1,7 +1,6 @@
 import {setAddress} from './form.js';
 import {createCard} from './create-card.js';
-import {getData} from './api.js'
-import {createGetErrorMessage} from './create-message.js'
+import {setfilterRules} from './filters.js'
 
 const MAP_ZOOM = 10;
 
@@ -56,9 +55,17 @@ const activateMap = () =>{
     const {lat, lng} = evt.target.getLatLng();
     setAddress(lat.toFixed(5), lng.toFixed(5))
   });
+}
 
-  const createAdds = (dataArray) => {
-    dataArray.forEach((dataElement) => {
+let markersLayer = new L.LayerGroup();
+
+const createAdds = (dataArray) => {
+  markersLayer.clearLayers();
+
+  dataArray
+    .filter(setfilterRules)
+    .slice(0, 10)
+    .forEach((dataElement) => {
       const card = createCard(dataElement);
 
       const icon = L.icon({
@@ -78,18 +85,15 @@ const activateMap = () =>{
           icon,
         },
       );
-      marker.addTo(map);
       marker.bindPopup(card);
+      markersLayer.addLayer(marker);
     });
-  }
-
-  getData(createAdds, createGetErrorMessage);
+  markersLayer.addTo(map);
 }
-
 
 const resetMap = () => {
   map.panTo([BasicCoordinates.LAT, BasicCoordinates.LNG]);
   mainMarker.setLatLng([BasicCoordinates.LAT, BasicCoordinates.LNG]);
 }
 
-export {isActivePage, activateMap, resetMap}
+export {isActivePage, activateMap, resetMap, createAdds}

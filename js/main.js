@@ -1,8 +1,8 @@
-import {isActivePage, activateMap, resetMap} from './map.js'
+import {isActivePage, activateMap, resetMap, createAdds} from './map.js'
+import {getData} from './api.js'
 import {disableForm, setFormSubmit, resetForm, setResetButtonHandler, activateForm} from './form.js'
-import {disableFilters, resetFilters} from './filters.js'
-import {createSendSuccessMessage} from './create-message.js'
-import {createSendErrorMessage} from './create-message.js'
+import {disableFilters, resetFilters, setFilterChangeHandler} from './filters.js'
+import {createSendSuccessMessage, createSendErrorMessage, createGetErrorMessage} from './create-message.js'
 
 
 const resetPage = () => {
@@ -19,6 +19,13 @@ new Promise((resolve, reject) => {
 })
   .then(() => {
     activateMap();
+    getData((dataArray) => {
+      /*eslint-disable*/
+      console.log(dataArray)
+      createAdds(dataArray);
+      setFilterChangeHandler(() => createAdds(dataArray));
+    },
+    createGetErrorMessage);
     activateForm();
     setResetButtonHandler(resetPage);
     setFormSubmit(() => {
@@ -32,3 +39,6 @@ new Promise((resolve, reject) => {
     disableFilters();
     disableForm();
   })
+
+
+

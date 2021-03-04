@@ -1,4 +1,4 @@
-import {isEscEvent} from './util.js'
+import {isEscEvent, isEnterEvent} from './util.js'
 
 const MESSAGE_SHOW_TIME = 5000;
 
@@ -27,8 +27,10 @@ const onDocumentEscKeydown = (evt) => {
 };
 
 const onButtonKeydown = (evt) => {
-  evt.preventDefault();
-  removeMessage();
+  if (isEnterEvent(evt)) {
+    evt.preventDefault();
+    removeMessage();
+  }
 };
 
 const onDocumentClick = () => removeMessage();

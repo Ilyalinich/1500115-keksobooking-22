@@ -132,6 +132,7 @@ const setResetButtonHandler = (resetPage) => {
 const resetForm = () => {
   adForm.reset();
   changePriseField();
+  document.querySelector('.ad-form__submit').blur();
 }
 
 const setFormSubmit = (onSuccess, onFail) => {

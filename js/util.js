@@ -61,12 +61,8 @@ const disableElements = (elements) => {
   }
 }
 
-const isEscEvent = (evt) => {
-  return evt.key === 'Escape' || evt.key === 'Esc';
-};
+const isEscEvent = (evt) => evt.key.includes('Escape' || 'Esc' );
 
-const isEnterEvent = (evt) => {
-  return evt.key === 'Enter';
-};
+const isEnterEvent = (evt) => evt.key === 'Enter';
 
 export {getRandomInteger, getRandomFloat, getRandomElement, getRandomLengthArray, disableElements, isEscEvent, isEnterEvent}
