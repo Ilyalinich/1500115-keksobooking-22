@@ -65,4 +65,12 @@ const isEscEvent = (evt) => evt.key.includes('Escape' || 'Esc' );
 
 const isEnterEvent = (evt) => evt.key === 'Enter';
 
-export {getRandomInteger, getRandomFloat, getRandomElement, getRandomLengthArray, disableElements, isEscEvent, isEnterEvent}
+const debounce = (cb, delay) => {
+  let timeout
+  return () => {
+    clearTimeout(timeout);
+    timeout = setTimeout(cb, delay);
+  };
+};
+
+export {getRandomInteger, getRandomFloat, getRandomElement, getRandomLengthArray, disableElements, isEscEvent, isEnterEvent, debounce}

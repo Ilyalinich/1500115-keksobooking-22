@@ -7,13 +7,13 @@ const PriceLimits = {
 
 const filtersForm = document.querySelector('.map__filters');
 const filtersFormElements = filtersForm.children;
-const typeField = filtersForm.querySelector('#housing-type');
-const priceField = filtersForm.querySelector('#housing-price');
-const roomsField = filtersForm.querySelector('#housing-rooms');
-const guestsField = filtersForm.querySelector('#housing-guests');
+const typeFilter = filtersForm.querySelector('#housing-type');
+const priceFilter = filtersForm.querySelector('#housing-price');
+const roomsFilter = filtersForm.querySelector('#housing-rooms');
+const guestsFilter = filtersForm.querySelector('#housing-guests');
 
-const featuresContainer = filtersForm.querySelector('#housing-features');
-const features = Array.from(featuresContainer.children)
+const featuresFilter = filtersForm.querySelector('#housing-features');
+const features = Array.from(featuresFilter.children)
   .filter(element => element.classList.contains('map__checkbox'));
 let checkedFeatures = [];
 let checkedFeaturesValues = [];
@@ -28,27 +28,39 @@ const disableFilters = () => {
   disableElements(filtersFormElements);
 }
 
-const resetFilters = () => filtersForm.reset();
+const resetFilters = () => {
+  filtersForm.reset();
+  getCheckedFeaturesValues();
+};
 
-const setfilterRules = (element) => {
-  const compareResult = checkedFeaturesValues.filter(value => element.offer.features.includes(value))
+const setTypeFilterRules = (element) => typeFilter.value === 'any' || element.offer.type === typeFilter.value;
+const setPriceFilterRules = (element) =>
+  priceFilter.value === 'any' ||
+  priceFilter.value === 'low' && element.offer.price < PriceLimits.MIN ||
+  priceFilter.value === 'middle' && element.offer.price >= PriceLimits.MIN && element.offer.price < PriceLimits.MAX ||
+  priceFilter.value === 'high' && element.offer.price >= PriceLimits.MAX
+const setRoomsFilterRules = (element) => roomsFilter.value === 'any' || element.offer.rooms === Number(roomsFilter.value);
+const setGuestsFilterRules = (element) => guestsFilter.value === 'any' || element.offer.guests === Number(guestsFilter.value);
+const setFeaturesFilterRules = (element) => {
+  const includedValues = checkedFeaturesValues.filter(value => element.offer.features.includes(value));
+  return checkedFeatures.length === 0 || includedValues.length === checkedFeaturesValues.length
+}
 
-  return (typeField.value === 'any' || element.offer.type === typeField.value) &&
-         (roomsField.value === 'any' || element.offer.rooms === Number(roomsField.value)) &&
-         (guestsField.value === 'any' || element.offer.guests === Number(guestsField.value)) &&
-         (priceField.value === 'any' ||  priceField.value === 'low' && element.offer.price < PriceLimits.MIN ||
-          priceField.value === 'middle' && element.offer.price >= PriceLimits.MIN && element.offer.price < PriceLimits.MAX ||
-          priceField.value === 'high' && element.offer.price >= PriceLimits.MAX) &&
-         (checkedFeatures.length === 0 || compareResult.length === checkedFeaturesValues.length)
+const setFiltersRules = (element) => {
+  return setTypeFilterRules(element) &&
+         setPriceFilterRules(element) &&
+         setRoomsFilterRules(element) &&
+         setGuestsFilterRules(element) &&
+         setFeaturesFilterRules(element)
 }
 
 const setFilterChangeHandler = (cb) => {
-  filtersForm.addEventListener('change', (evt) => {
+  filtersForm.addEventListener('change', () => {
     getCheckedFeaturesValues();
-    /*eslint-disable*/
-    console.log(evt.target.value);
     cb();
   })
 }
 
-export {disableFilters, resetFilters, setfilterRules, setFilterChangeHandler}
+export {disableFilters, resetFilters, setFiltersRules, setFilterChangeHandler}
+
+

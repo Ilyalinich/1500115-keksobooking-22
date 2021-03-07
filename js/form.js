@@ -1,7 +1,5 @@
 import {disableElements} from './util.js'
 import {sendData} from './api.js'
-// import {createSendSuccessMessage, createSendErrorMessage} from './create-message.js'
-
 
 const MIN_PRICE_COUNTS = {
   bungalow: 0,
@@ -73,16 +71,14 @@ const activateForm = () => {
     priceField.setCustomValidity(validationMessage);
     priceField.reportValidity()
   }
-
-  priceField.addEventListener('input', () => {
-    checkPriceFieldValidity()
-  });
+  const onPriceFieldInput = () => checkPriceFieldValidity();
 
   const onTypeFieldChange = () => {
     changePriseField();
     checkPriceFieldValidity();
   }
 
+  priceField.addEventListener('input', onPriceFieldInput);
   typeField.addEventListener('change', onTypeFieldChange);
 
 

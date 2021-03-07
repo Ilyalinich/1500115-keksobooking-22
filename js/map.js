@@ -1,6 +1,6 @@
 import {setAddress} from './form.js';
 import {createCard} from './create-card.js';
-import {setfilterRules} from './filters.js'
+import {setFiltersRules} from './filters.js'
 
 const MAP_ZOOM = 10;
 
@@ -59,14 +59,14 @@ const activateMap = () =>{
 
 let markersLayer = new L.LayerGroup();
 
-const createAdds = (dataArray) => {
+const renderAds = (ads) => {
   markersLayer.clearLayers();
 
-  dataArray
-    .filter(setfilterRules)
+  ads
+    .filter(setFiltersRules)
     .slice(0, 10)
-    .forEach((dataElement) => {
-      const card = createCard(dataElement);
+    .forEach((ad) => {
+      const card = createCard(ad);
 
       const icon = L.icon({
         iconUrl: '../img/pin.svg',
@@ -74,7 +74,7 @@ const createAdds = (dataArray) => {
         iconAnchor: [26, 52],
       });
 
-      const {lat, lng} = dataElement.location;
+      const {lat, lng} = ad.location;
 
       const marker = L.marker(
         {
@@ -92,8 +92,11 @@ const createAdds = (dataArray) => {
 }
 
 const resetMap = () => {
-  map.panTo([BasicCoordinates.LAT, BasicCoordinates.LNG]);
+  map.setView({
+    lat: BasicCoordinates.LAT,
+    lng: BasicCoordinates.LNG,
+  }, MAP_ZOOM);
   mainMarker.setLatLng([BasicCoordinates.LAT, BasicCoordinates.LNG]);
 }
 
-export {isActivePage, activateMap, resetMap, createAdds}
+export {isActivePage, activateMap, resetMap, renderAds}
