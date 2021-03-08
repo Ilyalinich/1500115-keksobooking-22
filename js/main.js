@@ -2,7 +2,7 @@ import {debounce} from './util.js'
 import {isActivePage, activateMap, resetMap, renderAds} from './map.js'
 import {getData} from './api.js'
 import {disableForm, setFormSubmit, resetForm, setResetButtonHandler, activateForm} from './form.js'
-import {disableFilters, resetFilters, setFilterChangeHandler} from './filters.js'
+import {disableFilters, resetFilters, setFilterChangeHandler, filterAds} from './filter.js'
 import {createSendSuccessMessage, createSendErrorMessage, createGetErrorMessage} from './create-message.js'
 
 const RERENDER_DELAY = 500;
@@ -32,12 +32,12 @@ new Promise((resolve, reject) => isActivePage ? resolve() : reject())
     );
 
     getData((ads) => {
-      renderAds(ads);
+      renderAds(filterAds(ads));
       setFilterChangeHandler(debounce(
-        () => renderAds(ads),
+        () => renderAds(filterAds(ads)),
         RERENDER_DELAY,
       ));
-      offers = ads;
+      offers = filterAds(ads);
     },
     () => {
       createGetErrorMessage();

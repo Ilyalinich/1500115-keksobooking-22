@@ -1,6 +1,5 @@
 import {setAddress} from './form.js';
 import {createCard} from './create-card.js';
-import {setFiltersRules} from './filters.js'
 
 const MAP_ZOOM = 10;
 
@@ -57,37 +56,35 @@ const activateMap = () =>{
   });
 }
 
+
 let markersLayer = new L.LayerGroup();
 
 const renderAds = (ads) => {
   markersLayer.clearLayers();
 
-  ads
-    .filter(setFiltersRules)
-    .slice(0, 10)
-    .forEach((ad) => {
-      const card = createCard(ad);
+  ads.forEach((ad) => {
+    const card = createCard(ad);
 
-      const icon = L.icon({
-        iconUrl: '../img/pin.svg',
-        iconSize: [52, 52],
-        iconAnchor: [26, 52],
-      });
-
-      const {lat, lng} = ad.location;
-
-      const marker = L.marker(
-        {
-          lat,
-          lng,
-        },
-        {
-          icon,
-        },
-      );
-      marker.bindPopup(card);
-      markersLayer.addLayer(marker);
+    const icon = L.icon({
+      iconUrl: '../img/pin.svg',
+      iconSize: [52, 52],
+      iconAnchor: [26, 52],
     });
+
+    const {lat, lng} = ad.location;
+
+    const marker = L.marker(
+      {
+        lat,
+        lng,
+      },
+      {
+        icon,
+      },
+    );
+    marker.bindPopup(card);
+    markersLayer.addLayer(marker);
+  });
   markersLayer.addTo(map);
 }
 
