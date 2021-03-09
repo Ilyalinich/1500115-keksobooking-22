@@ -4,7 +4,7 @@ import {getData} from './api.js'
 import {disableForm, setFormSubmit, resetForm, setResetButtonHandler, activateForm} from './form.js'
 import {disableFilters, resetFilters, setFilterChangeHandler} from './filters.js'
 import {createSendSuccessMessage, createSendErrorMessage, createGetErrorMessage} from './create-message.js'
-import './files.js'
+
 
 const RERENDER_DELAY = 500;
 
