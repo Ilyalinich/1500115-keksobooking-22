@@ -1,6 +1,5 @@
 import {disableElements} from './util.js'
 
-const MAX_ADS_COUNT = 10;
 
 const PriceLimit = {
   MIN: 10000,
@@ -21,9 +20,8 @@ const disableFilters = () => {
   disableElements(filtersFormElements);
 }
 
-const resetFilters = () => {
-  filtersForm.reset();
-};
+const resetFilters = () => filtersForm.reset();
+
 
 const checkTypeFilterRules = (type) => typeFilter.value === 'any' || type === typeFilter.value;
 const checkPriceFilterRules = (price) =>
@@ -37,7 +35,7 @@ const checkFeaturesFilterRules = (features) => {
   const checkedValues = featureCheckboxes
     .filter((checkbox) => checkbox.checked === true)
     .map((checkbox) => checkbox.value);
-  const includedValues = checkedValues.filter(value => features.includes(value));
+  const includedValues = checkedValues.filter((value) => features.includes(value));
   return checkedValues.length === 0 || includedValues.length === checkedValues.length
 }
 
@@ -49,17 +47,10 @@ const checkFiltersRules = (ad) => {
          checkFeaturesFilterRules(ad.offer.features)
 }
 
-const setFilterChangeHandler = (cb) => {
-  filtersForm.addEventListener('change', () => {
-    cb();
-  })
-}
+const setFilterChangeHandler = (cb) => filtersForm.addEventListener('change', () => cb())
 
-const filterAds = (ads) => {
-  return ads
-    .filter(checkFiltersRules)
-    .slice(0, MAX_ADS_COUNT);
-}
+const filterAds = (ads) => ads.filter(checkFiltersRules);
+
 
 export {disableFilters, resetFilters, setFilterChangeHandler, filterAds}
 

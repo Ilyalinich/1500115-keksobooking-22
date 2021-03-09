@@ -12,9 +12,9 @@ let offers = [];
 const resetPage = () => {
   resetForm();
   resetMap();
-  resetFilters();
   if(offers.length !== 0) {
-    renderAds(offers)
+    resetFilters();
+    renderAds(offers);
   }
 }
 
@@ -32,12 +32,17 @@ new Promise((resolve, reject) => isActivePage ? resolve() : reject())
     );
 
     getData((ads) => {
-      renderAds(filterAds(ads));
-      setFilterChangeHandler(debounce(
-        () => renderAds(filterAds(ads)),
-        RERENDER_DELAY,
-      ));
-      offers = filterAds(ads);
+      renderAds(ads);
+      setFilterChangeHandler(
+        debounce(
+          () => {
+            const filteredAds = filterAds(ads);
+            renderAds(filteredAds);
+          },
+          RERENDER_DELAY,
+        ));
+
+      offers = ads;
     },
     () => {
       createGetErrorMessage();
