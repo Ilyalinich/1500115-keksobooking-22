@@ -5,6 +5,7 @@ import {disableForm, setFormSubmit, resetForm, setResetButtonHandler, activateFo
 import {disableFilters, resetFilters, setFilterChangeHandler, filterAds} from './filter.js'
 import {createSendSuccessMessage, createSendErrorMessage, createGetErrorMessage} from './create-message.js'
 
+
 const RERENDER_DELAY = 500;
 
 let offers = [];

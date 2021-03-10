@@ -1,5 +1,6 @@
 import {disableElements} from './util.js'
 import {sendData} from './api.js'
+import {setAvatarChangeHandler, setPhotoChangeHandler, resetFilesPreviews} from './file-preview.js'
 
 const MIN_PRICE_COUNTS = {
   bungalow: 0,
@@ -32,6 +33,11 @@ const disableForm = () => {
 }
 
 const activateForm = () => {
+
+  setAvatarChangeHandler();
+  setPhotoChangeHandler();
+
+
   const titleField = adForm.querySelector('#title');
 
 
@@ -128,6 +134,7 @@ const setResetButtonHandler = (resetPage) => {
 const resetForm = () => {
   adForm.reset();
   changePriseField();
+  resetFilesPreviews();
   document.querySelector('.ad-form__submit').blur();
 }
 
