@@ -8,51 +8,90 @@ const REALTY_TYPES = {
 const cardTemplate = document.querySelector('#card')
   .content
   .querySelector('.popup');
-
 const photoTemplate = cardTemplate.querySelector('.popup__photo')
-const photosFragment = document.createDocumentFragment();
-const featuresFragment = document.createDocumentFragment();
 
 
-
-const createCard = (dataElement) => {
+const createCard = (ad) => {
 
   const card = cardTemplate.cloneNode(true);
-  const featureItems = card.querySelectorAll('.popup__feature');
 
+  const avatarContainer = card.querySelector('.popup__avatar');
+  if (ad.author.avatar === null) {
+    avatarContainer.remove();
+  } else {
+    avatarContainer.src = ad.author.avatar;
+  }
 
-  dataElement.offer.features.forEach((featureName) => {
-    for (const featureItem of featureItems) {
-      if (featureItem.classList.contains(`popup__feature--${featureName}`)) {
-        featuresFragment.appendChild(featureItem)
-      }
-    }
-  });
+  card.querySelector('.popup__title').textContent = ad.offer.title;
+  card.querySelector('.popup__text--price').innerHTML = `${ad.offer.price} <span>₽/ночь</span>`;
 
-  dataElement.offer.photos.forEach((photoSrc) => {
-    const photo = photoTemplate.cloneNode(true);
-    photo.classList.add('popup__photo');
-    photo.src = photoSrc;
+  const addressContainer = card.querySelector('.popup__text--address');
+  if (ad.offer.address === null) {
+    addressContainer.remove();
+  } else {
+    addressContainer.textContent = ad.offer.address;
+  }
 
-    photosFragment.appendChild(photo);
-  });
+  const typeContainer = card.querySelector('.popup__type');
+  if (ad.offer.type === null) {
+    typeContainer.remove();
+  } else {
+    typeContainer.textContent = REALTY_TYPES[ad.offer.type];
+  }
 
+  const timeContainer = card.querySelector('.popup__text--time');
+  if (ad.offer.checkin === null || ad.offer.checkout === null) {
+    timeContainer.remove();
+  } else {
+    timeContainer.textContent = `Заезд после ${ad.offer.checkin}, выезд до ${ad.offer.checkout}.`
+  }
 
-  card.querySelector('.popup__title').textContent = dataElement.offer.title;
-  card.querySelector('.popup__text--address').textContent = dataElement.offer.address;
-  card.querySelector('.popup__text--price').innerHTML = `${dataElement.offer.price} <span>₽/ночь</span>`;
-  card.querySelector('.popup__type').textContent = REALTY_TYPES[dataElement.offer.type];
-  card.querySelector('.popup__text--capacity').textContent = `${dataElement.offer.rooms} комнаты для ${dataElement.offer.guests} гостей`;
-  card.querySelector('.popup__text--time').textContent = `Заезд после ${dataElement.offer.checkin}, выезд до ${dataElement.offer.checkout}.`
+  const capacityContainer =  card.querySelector('.popup__text--capacity');
+  if (ad.offer.rooms === null || ad.offer.guests === null) {
+    capacityContainer.remove();
+  } else {
+    capacityContainer.textContent = `${ad.offer.rooms} комнаты для ${ad.offer.guests} гостей`;
+  }
+
   const featuresList = card.querySelector('.popup__features');
-  featuresList.innerHTML = null;
-  featuresList.appendChild(featuresFragment);
-  card.querySelector('.popup__description').textContent = dataElement.offer.description;
-  const photosList = card.querySelector('.popup__photos');
-  photosList.innerHTML = null;
-  photosList.appendChild(photosFragment);
-  card.querySelector('.popup__avatar').src = dataElement.author.avatar;
+  const featureItems = card.querySelectorAll('.popup__feature');
+  if (ad.offer.features.length === 0) {
+    featuresList.remove();
+  } else {
+    const featuresFragment = document.createDocumentFragment();
+    ad.offer.features.forEach((featureName) => {
+      for (const featureItem of featureItems) {
+        if (featureItem.classList.contains(`popup__feature--${featureName}`)) {
+          featuresFragment.appendChild(featureItem)
+        }
+      }
+    });
+    featuresList.innerHTML = null;
+    featuresList.appendChild(featuresFragment);
+  }
 
+  const descriptionContainer =  card.querySelector('.popup__description');
+  if (ad.offer.description === null) {
+    descriptionContainer.remove();
+  } else {
+    descriptionContainer.textContent = ad.offer.description;
+  }
+
+  const photosList = card.querySelector('.popup__photos');
+  const photosFragment = document.createDocumentFragment();
+  if (ad.offer.photos.length === 0) {
+    photosList.remove();
+  } else {
+    ad.offer.photos.forEach((photoSrc) => {
+      const photo = photoTemplate.cloneNode(true);
+      photo.classList.add('popup__photo');
+      photo.src = photoSrc;
+
+      photosFragment.appendChild(photo);
+    });
+    photosList.innerHTML = null;
+    photosList.appendChild(photosFragment);
+  }
 
   return card;
 }

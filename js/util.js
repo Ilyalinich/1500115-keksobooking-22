@@ -61,12 +61,16 @@ const disableElements = (elements) => {
   }
 }
 
-const isEscEvent = (evt) => {
-  return evt.key === 'Escape' || evt.key === 'Esc';
+const isEscEvent = (evt) => evt.key.includes('Escape' || 'Esc' );
+
+const isEnterEvent = (evt) => evt.key === 'Enter';
+
+const debounce = (cb, delay) => {
+  let timeout
+  return () => {
+    clearTimeout(timeout);
+    timeout = setTimeout(cb, delay);
+  };
 };
 
-const isEnterEvent = (evt) => {
-  return evt.key === 'Enter';
-};
-
-export {getRandomInteger, getRandomFloat, getRandomElement, getRandomLengthArray, disableElements, isEscEvent, isEnterEvent}
+export {getRandomInteger, getRandomFloat, getRandomElement, getRandomLengthArray, disableElements, isEscEvent, isEnterEvent, debounce}

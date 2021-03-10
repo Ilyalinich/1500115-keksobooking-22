@@ -1,8 +1,7 @@
 import {setAddress} from './form.js';
 import {createCard} from './create-card.js';
-import {getData} from './api.js'
-import {createGetErrorMessage} from './create-message.js'
 
+const MAX_ADS_COUNT = 10;
 const MAP_ZOOM = 10;
 
 const BasicCoordinates = {
@@ -56,10 +55,18 @@ const activateMap = () =>{
     const {lat, lng} = evt.target.getLatLng();
     setAddress(lat.toFixed(5), lng.toFixed(5))
   });
+}
 
-  const createAdds = (dataArray) => {
-    dataArray.forEach((dataElement) => {
-      const card = createCard(dataElement);
+
+let markersLayer = new L.LayerGroup();
+
+const renderAds = (ads) => {
+  markersLayer.clearLayers();
+
+  ads
+    .slice(0, MAX_ADS_COUNT)
+    .forEach((ad) => {
+      const card = createCard(ad);
 
       const icon = L.icon({
         iconUrl: '../img/pin.svg',
@@ -67,7 +74,7 @@ const activateMap = () =>{
         iconAnchor: [26, 52],
       });
 
-      const {lat, lng} = dataElement.location;
+      const {lat, lng} = ad.location;
 
       const marker = L.marker(
         {
@@ -78,18 +85,18 @@ const activateMap = () =>{
           icon,
         },
       );
-      marker.addTo(map);
       marker.bindPopup(card);
+      markersLayer.addLayer(marker);
     });
-  }
-
-  getData(createAdds, createGetErrorMessage);
+  markersLayer.addTo(map);
 }
 
-
 const resetMap = () => {
-  map.panTo([BasicCoordinates.LAT, BasicCoordinates.LNG]);
+  map.setView({
+    lat: BasicCoordinates.LAT,
+    lng: BasicCoordinates.LNG,
+  }, MAP_ZOOM);
   mainMarker.setLatLng([BasicCoordinates.LAT, BasicCoordinates.LNG]);
 }
 
-export {isActivePage, activateMap, resetMap}
+export {isActivePage, activateMap, resetMap, renderAds}
