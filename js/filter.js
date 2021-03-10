@@ -39,12 +39,12 @@ const checkFeaturesFilterRules = (features) => {
   return checkedValues.length === 0 || includedValues.length === checkedValues.length
 }
 
-const checkFiltersRules = (ad) => {
-  return checkTypeFilterRules(ad.offer.type) &&
-         checkPriceFilterRules(ad.offer.price) &&
-         checkRoomsFilterRules(ad.offer.rooms) &&
-         checkGuestsFilterRules(ad.offer.guests) &&
-         checkFeaturesFilterRules(ad.offer.features)
+const checkFiltersRules = ({offer} = this.offer) => {
+  return checkTypeFilterRules(offer.type) &&
+         checkPriceFilterRules(offer.price) &&
+         checkRoomsFilterRules(offer.rooms) &&
+         checkGuestsFilterRules(offer.guests) &&
+         checkFeaturesFilterRules(offer.features)
 }
 
 const setFilterChangeHandler = (cb) => filtersForm.addEventListener('change', () => cb())
