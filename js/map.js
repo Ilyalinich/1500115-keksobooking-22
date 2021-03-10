@@ -1,7 +1,7 @@
 import {setAddress} from './form.js';
 import {createCard} from './create-card.js';
-import {setFiltersRules} from './filters.js'
 
+const MAX_ADS_COUNT = 10;
 const MAP_ZOOM = 10;
 
 const BasicCoordinates = {
@@ -57,14 +57,14 @@ const activateMap = () =>{
   });
 }
 
+
 let markersLayer = new L.LayerGroup();
 
 const renderAds = (ads) => {
   markersLayer.clearLayers();
 
   ads
-    .filter(setFiltersRules)
-    .slice(0, 10)
+    .slice(0, MAX_ADS_COUNT)
     .forEach((ad) => {
       const card = createCard(ad);
 

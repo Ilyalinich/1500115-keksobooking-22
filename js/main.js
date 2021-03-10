@@ -2,7 +2,7 @@ import {debounce} from './util.js'
 import {isActivePage, activateMap, resetMap, renderAds} from './map.js'
 import {getData} from './api.js'
 import {disableForm, setFormSubmit, resetForm, setResetButtonHandler, activateForm} from './form.js'
-import {disableFilters, resetFilters, setFilterChangeHandler} from './filters.js'
+import {disableFilters, resetFilters, setFilterChangeHandler, filterAds} from './filter.js'
 import {createSendSuccessMessage, createSendErrorMessage, createGetErrorMessage} from './create-message.js'
 
 
@@ -13,9 +13,9 @@ let offers = [];
 const resetPage = () => {
   resetForm();
   resetMap();
-  resetFilters();
   if(offers.length !== 0) {
-    renderAds(offers)
+    resetFilters();
+    renderAds(offers);
   }
 }
 
@@ -34,10 +34,15 @@ new Promise((resolve, reject) => isActivePage ? resolve() : reject())
 
     getData((ads) => {
       renderAds(ads);
-      setFilterChangeHandler(debounce(
-        () => renderAds(ads),
-        RERENDER_DELAY,
-      ));
+      setFilterChangeHandler(
+        debounce(
+          () => {
+            const filteredAds = filterAds(ads);
+            renderAds(filteredAds);
+          },
+          RERENDER_DELAY,
+        ));
+
       offers = ads;
     },
     () => {
