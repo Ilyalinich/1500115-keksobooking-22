@@ -55,6 +55,3 @@ new Promise((resolve, reject) => isActivePage ? resolve() : reject())
     disableFilters();
     disableForm();
   })
-
-
-

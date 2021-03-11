@@ -9,9 +9,9 @@ const setAvatarChangeHandler = () => {
     const file = avatarChooser.files[0];
     const fileType = file.type;
 
-    const matches = FILE_TYPES.some((type) => fileType.endsWith(type))
+    const isCorrectType = FILE_TYPES.some((type) => fileType.endsWith(type))
 
-    if (matches) {
+    if (isCorrectType) {
       const reader = new FileReader();
 
       reader.addEventListener('load', () => {
@@ -33,9 +33,10 @@ const setPhotoChangeHandler = () => {
 
     for (let file of files) {
       const fileType = file.type;
-      const matches = FILE_TYPES.some((type) => fileType.endsWith(type));
 
-      if (matches) {
+      const isCorrectType = FILE_TYPES.some((type) => fileType.endsWith(type));
+
+      if (isCorrectType) {
         const reader = new FileReader();
 
         reader.addEventListener('load', () => {
@@ -62,14 +63,3 @@ const resetFilesPreviews = () => {
 }
 
 export {setAvatarChangeHandler, setPhotoChangeHandler, resetFilesPreviews}
-
-
-
-
-
-
-
-
-
-
-

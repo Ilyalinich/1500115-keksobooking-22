@@ -39,7 +39,7 @@ const checkFeaturesFilterRules = (features) => {
   return checkedValues.length === 0 || includedValues.length === checkedValues.length
 }
 
-const checkFiltersRules = ({offer} = this.offer) => {
+const checkFiltersRules = ({offer}) => {
   return checkTypeFilterRules(offer.type) &&
          checkPriceFilterRules(offer.price) &&
          checkRoomsFilterRules(offer.rooms) &&
@@ -53,5 +53,3 @@ const filterAds = (ads) => ads.filter(checkFiltersRules);
 
 
 export {disableFilters, resetFilters, setFilterChangeHandler, filterAds}
-
-
