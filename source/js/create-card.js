@@ -23,7 +23,10 @@ const createCard = (ad) => {
   }
 
   card.querySelector('.popup__title').textContent = ad.offer.title;
-  card.querySelector('.popup__text--price').innerHTML = `${ad.offer.price} <span>₽/ночь</span>`;
+
+  const priceContainer = card.querySelector('.popup__text--price');
+  priceContainer.textContent = ad.offer.price;
+  priceContainer.insertAdjacentHTML('beforeend', '<span> ₽/ночь</span>');
 
   const addressContainer = card.querySelector('.popup__text--address');
   if (ad.offer.address === null) {
