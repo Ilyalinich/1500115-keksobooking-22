@@ -1,6 +1,5 @@
 import {disableElements} from './util.js'
 
-
 const PriceLimit = {
   MIN: 10000,
   MAX: 50000,

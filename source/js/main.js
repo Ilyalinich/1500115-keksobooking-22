@@ -1,7 +1,7 @@
 import {debounce} from './util.js'
 import {isActivePage, activateMap, resetMap, renderAds} from './map.js'
 import {getData} from './api.js'
-import {disableForm, setFormSubmit, resetForm, setResetButtonHandler, activateForm} from './form.js'
+import {disableForm, setFormSubmit, resetForm, setResetButtonHandler, activateForm} from './form/form.js'
 import {disableFilters, resetFilters, setFilterChangeHandler, filterAds} from './filter.js'
 import {createSendSuccessMessage, createSendErrorMessage, createGetErrorMessage} from './create-message.js'
 

@@ -1,4 +1,6 @@
-import {setAddress} from './form.js';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import {setAddress} from './form/form.js'
 import {createCard} from './create-card.js';
 
 const MAX_ADS_COUNT = 10;
@@ -11,7 +13,6 @@ const BasicCoordinates = {
 
 let isActivePage = false;
 
-/*global L:readonly */
 const map = L.map('map-canvas')
   .on('load', () => {
     isActivePage = true;
