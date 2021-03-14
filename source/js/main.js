@@ -1,5 +1,5 @@
 import {debounce} from './util.js'
-import {isActivePage, activateMap, resetMap, renderAds} from './map.js'
+import {loadMap, createMapLayers, createMainMarker, resetMap, renderAds} from './map.js'
 import {getData} from './api.js'
 import {disableForm, setFormSubmit, resetForm, setResetButtonHandler, activateForm} from './form/form.js'
 import {disableFilters, resetFilters, setFilterChangeHandler, filterAds} from './filter.js'
@@ -20,9 +20,10 @@ const resetPage = () => {
 }
 
 
-new Promise((resolve, reject) => isActivePage ? resolve() : reject())
+new Promise((resolve, reject) => loadMap() ? resolve() : reject())
   .then(() => {
-    activateMap();
+    createMapLayers();
+    createMainMarker();
     activateForm();
     setResetButtonHandler(resetPage);
     setFormSubmit(() => {

@@ -11,28 +11,34 @@ const BasicCoordinates = {
   LNG: 139.692,
 };
 
-let isActivePage = false;
+const map = L.map('map-canvas');
 
-const map = L.map('map-canvas')
-  .on('load', () => {
-    isActivePage = true;
-  })
-  .setView({
-    lat: BasicCoordinates.LAT,
-    lng: BasicCoordinates.LNG,
-  }, MAP_ZOOM);
+const loadMap = () => {
+  let isMapLoaded = false;
 
-let mainMarker = '';
+  map
+    .on('load', () => isMapLoaded = true)
+    .setView({
+      lat: BasicCoordinates.LAT,
+      lng: BasicCoordinates.LNG,
+    }, MAP_ZOOM);
 
-const activateMap = () =>{
-  setAddress(BasicCoordinates.LAT, BasicCoordinates.LNG)
+  return isMapLoaded;
+}
 
+const createMapLayers = () => {
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     },
   ).addTo(map);
+}
+
+let mainMarker = '';
+
+const createMainMarker = () => {
+  setAddress(BasicCoordinates.LAT, BasicCoordinates.LNG);
 
   const mainIcon = L.icon({
     iconUrl: '../img/main-pin.svg',
@@ -50,12 +56,13 @@ const activateMap = () =>{
       icon: mainIcon,
     },
   );
-  mainMarker.addTo(map);
 
   mainMarker.on('move', (evt) => {
     const {lat, lng} = evt.target.getLatLng();
     setAddress(lat.toFixed(5), lng.toFixed(5))
   });
+
+  mainMarker.addTo(map);
 }
 
 
@@ -100,4 +107,4 @@ const resetMap = () => {
   mainMarker.setLatLng([BasicCoordinates.LAT, BasicCoordinates.LNG]);
 }
 
-export {isActivePage, activateMap, resetMap, renderAds}
+export {loadMap, createMapLayers, createMainMarker, resetMap, renderAds}

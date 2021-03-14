@@ -26,7 +26,7 @@ const onDocumentEscKeydown = (evt) => {
   }
 };
 
-const onButtonKeydown = (evt) => {
+const onErrorButtonKeydown = (evt) => {
   if (isEnterEvent(evt)) {
     evt.preventDefault();
     removeMessage();
@@ -35,7 +35,7 @@ const onButtonKeydown = (evt) => {
 
 const onDocumentClick = () => removeMessage();
 
-const onButtonClick = () => removeMessage();
+const onErrorButtonClick = () => removeMessage();
 
 
 const createSendSuccessMessage = () => {
@@ -52,8 +52,8 @@ const createSendErrorMessage = () => {
   messageContainer.append(errorMessage);
   const errorButton = messageContainer.querySelector('.error__button');
   errorButton.focus();
-  errorButton.addEventListener('click', onButtonClick);
-  errorButton.addEventListener('keydown', onButtonKeydown)
+  errorButton.addEventListener('click', onErrorButtonClick);
+  errorButton.addEventListener('keydown', onErrorButtonKeydown)
   document.addEventListener('keydown', onDocumentEscKeydown);
   document.addEventListener('click', onDocumentClick);
 }
