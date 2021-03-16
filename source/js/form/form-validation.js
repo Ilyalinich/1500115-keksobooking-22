@@ -1,3 +1,5 @@
+import {setAvatarChangeHandler, setPhotoChangeHandler} from './file-preview.js'
+
 const MIN_PRICE_COUNTS = {
   bungalow: 0,
   flat: 1000,
@@ -113,4 +115,17 @@ const setRoomsFieldValidation = () => {
   })
 }
 
-export {setTitleFieldValidation, setTypeFieldValidation, setPriceFieldValidation, setTimeInValidation, setTimeOutValidation, setRoomsFieldValidation, setCapacityFieldValidation, changePriseField}
+
+const setFormValidation = () => {
+  setAvatarChangeHandler();
+  setPhotoChangeHandler();
+  setTitleFieldValidation();
+  setTypeFieldValidation();
+  setPriceFieldValidation();
+  setTimeInValidation();
+  setTimeOutValidation();
+  setRoomsFieldValidation();
+  setCapacityFieldValidation();
+}
+
+export {setFormValidation, changePriseField}

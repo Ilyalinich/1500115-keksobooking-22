@@ -1,4 +1,4 @@
-import {disableElements} from './util.js'
+import {disableElements, enableElements} from './util.js'
 
 const PriceLimit = {
   MIN: 10000,
@@ -17,6 +17,11 @@ const featureCheckboxes = Array.from(filtersForm.querySelectorAll('[name="featur
 const disableFilters = () => {
   filtersForm.classList.add('map__filters--disabled');
   disableElements(filtersFormElements);
+}
+
+const enableFilters = () => {
+  filtersForm.classList.remove('map__filters--disabled');
+  enableElements(filtersFormElements);
 }
 
 const resetFilters = () => filtersForm.reset();
@@ -51,4 +56,4 @@ const setFilterChangeHandler = (cb) => filtersForm.addEventListener('change', ()
 const filterAds = (ads) => ads.filter(checkFiltersRules);
 
 
-export {disableFilters, resetFilters, setFilterChangeHandler, filterAds}
+export {disableFilters, enableFilters, resetFilters, setFilterChangeHandler, filterAds}

@@ -4,6 +4,12 @@ const disableElements = (elements) => {
   }
 }
 
+const enableElements = (elements) => {
+  for (const element of elements) {
+    element.disabled = false;
+  }
+}
+
 const isEscEvent = (evt) => evt.key.includes('Escape' || 'Esc' );
 
 const isEnterEvent = (evt) => evt.key === 'Enter';
@@ -16,4 +22,4 @@ const debounce = (cb, delay) => {
   };
 };
 
-export {disableElements, isEscEvent, isEnterEvent, debounce}
+export {disableElements, enableElements, isEscEvent, isEnterEvent, debounce}

@@ -4,26 +4,29 @@ import {setAddress} from './form/form.js'
 import {createCard} from './create-card.js';
 
 const MAX_ADS_COUNT = 10;
+const COORDINATE_PRECISION = 5;
 const MAP_ZOOM = 10;
 
-const BasicCoordinates = {
+const BasicCoordinate = {
   LAT: 35.6895,
   LNG: 139.692,
 };
 
-const map = L.map('map-canvas');
+const IconSize = {
+  WIDTH: 52,
+  HEIGTH: 52,
+}
 
-const loadMap = () => {
-  let isMapLoaded = false;
+let map = '';
 
+const createMap = (loadCallback) => {
+  map = L.map('map-canvas');
   map
-    .on('load', () => isMapLoaded = true)
+    .on('load', loadCallback)
     .setView({
-      lat: BasicCoordinates.LAT,
-      lng: BasicCoordinates.LNG,
+      lat: BasicCoordinate.LAT,
+      lng: BasicCoordinate.LNG,
     }, MAP_ZOOM);
-
-  return isMapLoaded;
 }
 
 const createMapLayers = () => {
@@ -38,18 +41,18 @@ const createMapLayers = () => {
 let mainMarker = '';
 
 const createMainMarker = () => {
-  setAddress(BasicCoordinates.LAT, BasicCoordinates.LNG);
+  setAddress(BasicCoordinate.LAT, BasicCoordinate.LNG);
 
   const mainIcon = L.icon({
     iconUrl: '../img/main-pin.svg',
-    iconSize: [52, 52],
-    iconAnchor: [26, 52],
+    iconSize: [IconSize.WIDTH, IconSize.HEIGTH],
+    iconAnchor: [IconSize.WIDTH/2, IconSize.HEIGTH],
   })
 
   mainMarker = L.marker(
     {
-      lat: BasicCoordinates.LAT,
-      lng: BasicCoordinates.LNG,
+      lat: BasicCoordinate.LAT,
+      lng: BasicCoordinate.LNG,
     },
     {
       draggable: true,
@@ -59,14 +62,14 @@ const createMainMarker = () => {
 
   mainMarker.on('move', (evt) => {
     const {lat, lng} = evt.target.getLatLng();
-    setAddress(lat.toFixed(5), lng.toFixed(5))
+    setAddress(lat.toFixed(COORDINATE_PRECISION), lng.toFixed(COORDINATE_PRECISION))
   });
 
   mainMarker.addTo(map);
 }
 
 
-let markersLayer = new L.LayerGroup();
+const markersLayer = new L.LayerGroup();
 
 const renderAds = (ads) => {
   markersLayer.clearLayers();
@@ -78,8 +81,8 @@ const renderAds = (ads) => {
 
       const icon = L.icon({
         iconUrl: '../img/pin.svg',
-        iconSize: [52, 52],
-        iconAnchor: [26, 52],
+        iconSize: [IconSize.WIDTH, IconSize.HEIGTH],
+        iconAnchor: [IconSize.WIDTH/2, IconSize.HEIGTH],
       });
 
       const {lat, lng} = ad.location;
@@ -101,10 +104,10 @@ const renderAds = (ads) => {
 
 const resetMap = () => {
   map.setView({
-    lat: BasicCoordinates.LAT,
-    lng: BasicCoordinates.LNG,
+    lat: BasicCoordinate.LAT,
+    lng: BasicCoordinate.LNG,
   }, MAP_ZOOM);
-  mainMarker.setLatLng([BasicCoordinates.LAT, BasicCoordinates.LNG]);
+  mainMarker.setLatLng([BasicCoordinate.LAT, BasicCoordinate.LNG]);
 }
 
-export {loadMap, createMapLayers, createMainMarker, resetMap, renderAds}
+export {createMap, createMapLayers, createMainMarker, resetMap, renderAds}

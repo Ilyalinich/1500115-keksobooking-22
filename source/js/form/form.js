@@ -1,8 +1,7 @@
-import {disableElements} from '../util.js'
+import {disableElements, enableElements} from '../util.js'
 import {sendData} from '../api.js'
-import {setTitleFieldValidation, setTypeFieldValidation, setPriceFieldValidation, setTimeInValidation,
-  setTimeOutValidation, setRoomsFieldValidation, setCapacityFieldValidation, changePriseField} from './form-validation.js'
-import {setAvatarChangeHandler, setPhotoChangeHandler, resetFilesPreviews} from './file-preview.js'
+import {changePriseField} from './form-validation.js'
+import {resetFilesPreviews} from './file-preview.js'
 
 const adForm = document.querySelector('.ad-form');
 const adFormElements = adForm.children;
@@ -16,17 +15,9 @@ const disableForm = () => {
   disableElements(adFormElements);
 }
 
-
-const activateForm = () => {
-  setAvatarChangeHandler();
-  setPhotoChangeHandler();
-  setTitleFieldValidation();
-  setTypeFieldValidation();
-  setPriceFieldValidation();
-  setTimeInValidation();
-  setTimeOutValidation();
-  setRoomsFieldValidation();
-  setCapacityFieldValidation();
+const enableForm = () => {
+  adForm.classList.remove('ad-form--disabled');
+  enableElements(adFormElements);
 }
 
 
@@ -59,4 +50,4 @@ const setFormSubmit = (onSuccess, onFail) => {
   })
 }
 
-export {setAddress, disableForm, activateForm, setFormSubmit, resetForm, setResetButtonHandler}
+export {setAddress, disableForm, enableForm, setFormSubmit, resetForm, setResetButtonHandler}
