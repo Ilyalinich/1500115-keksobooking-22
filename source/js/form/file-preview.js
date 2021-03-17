@@ -1,6 +1,11 @@
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 const MAX_PHOTO_COUNT = 10;
 
+const PhotoSize = {
+  WIDTH: 70,
+  HEIGTH: 70,
+}
+
 const avatarChooser = document.querySelector('#avatar');
 const avatarPreview = document.querySelector('.ad-form-header__preview img');
 
@@ -41,8 +46,8 @@ const setPhotoChangeHandler = () => {
 
         reader.addEventListener('load', () => {
           const photo = document.createElement('img');
-          photo.width = 70;
-          photo.height = 70;
+          photo.width = PhotoSize.WIDTH;
+          photo.height = PhotoSize.HEIGTH;
           photo.src = reader.result;
           photo.addEventListener('click', () => photo.remove())
 

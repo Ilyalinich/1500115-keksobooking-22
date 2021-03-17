@@ -40,7 +40,7 @@ const onErrorButtonClick = () => removeMessage();
 
 const createSendSuccessMessage = () => {
   const successMessage = successTemplate.cloneNode(true);
-  successMessage.style.zIndex = 1000;
+  successMessage.style.zIndex = '1000';
   messageContainer.append(successMessage);
   document.addEventListener('keydown', onDocumentEscKeydown);
   document.addEventListener('click', onDocumentClick);
@@ -48,7 +48,7 @@ const createSendSuccessMessage = () => {
 
 const createSendErrorMessage = () => {
   const errorMessage = errorTemplate.cloneNode(true);
-  errorMessage.style.zIndex = 1000;
+  errorMessage.style.zIndex = '1000';
   messageContainer.append(errorMessage);
   const errorButton = messageContainer.querySelector('.error__button');
   errorButton.focus();
@@ -62,11 +62,11 @@ const createSendErrorMessage = () => {
 const createGetErrorMessage = () => {
   const map = document.querySelector('.map')
   const messageContainer = document.createElement('div');
-  messageContainer.style.zIndex = 1000;
+  messageContainer.style.zIndex = '1000';
   messageContainer.style.position = 'absolute';
-  messageContainer.style.left = 0;
-  messageContainer.style.top = 0;
-  messageContainer.style.right = 0;
+  messageContainer.style.left = '0';
+  messageContainer.style.top = '0';
+  messageContainer.style.right = '0';
   messageContainer.style.padding = '10px 3px';
   messageContainer.style.fontSize = '30px';
   messageContainer.style.textAlign = 'center';

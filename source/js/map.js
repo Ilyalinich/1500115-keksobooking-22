@@ -41,10 +41,10 @@ const createMapLayers = () => {
 let mainMarker = '';
 
 const createMainMarker = () => {
-  setAddress(BasicCoordinate.LAT, BasicCoordinate.LNG);
+  setAddress(BasicCoordinate.LAT.toFixed(COORDINATE_PRECISION), BasicCoordinate.LNG.toFixed(COORDINATE_PRECISION));
 
   const mainIcon = L.icon({
-    iconUrl: '../img/main-pin.svg',
+    iconUrl: 'img/main-pin.svg',
     iconSize: [IconSize.WIDTH, IconSize.HEIGTH],
     iconAnchor: [IconSize.WIDTH/2, IconSize.HEIGTH],
   })
@@ -80,7 +80,7 @@ const renderAds = (ads) => {
       const card = createCard(ad);
 
       const icon = L.icon({
-        iconUrl: '../img/pin.svg',
+        iconUrl: 'img/pin.svg',
         iconSize: [IconSize.WIDTH, IconSize.HEIGTH],
         iconAnchor: [IconSize.WIDTH/2, IconSize.HEIGTH],
       });
